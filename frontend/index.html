@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credits Subscription System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .credit-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        .credit-number {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .subscription-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .history-item {
+            border-left: 4px solid #007bff;
+            padding-left: 15px;
+            margin: 10px 0;
+        }
+        .paypal-btn {
+            background: linear-gradient(45deg, #0070ba, #003087);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .paypal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,112,186,0.3);
+            color: white;
+            text-decoration: none;
+        }
+        .paypal-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .cancel-btn {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .cancel-btn:hover {
+            color: white;
+            transform: translateY(-1px);
+        }
+        .sandbox-badge {
+            background: linear-gradient(45deg, #ffa726, #ff9800);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .subscription-active {
+            border: 2px solid #28a745;
+            background: #f8fff9;
+        }
+        .subscription-inactive {
+            border: 2px solid #dc3545;
+            background: #fff8f8;
+        }
+        .subscription-cancelled {
+            border: 2px solid #ffc107;
+            background: #fffdf5;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success-animation {
+            animation: successPulse 0.6s ease-in-out;
+        }
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="text-center mb-4">
+                <div class="sandbox-badge">
+                    <i class="fab fa-paypal"></i> PAYPAL SANDBOX MODE
+                </div>
+                <h1>Credits Subscription System</h1>
+                <p class="text-muted">$49/month • 300 Credits • Automatic Renewal • Cancel Anytime</p>
+            </div>
+
+            <!-- User Login Section -->
+            <div id="loginSection" class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-user-circle"></i> Login / Register
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="email" id="userEmail" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="userName" class="form-control" placeholder="Your name">
+                        </div>
+                        <div class="col-md-2">
+                            <button onclick="loginUser()" class="btn btn-primary w-100">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Dashboard -->
+            <div id="dashboard" style="display: none;">
+                <!-- Credits Display -->
+                <div class="credit-card text-center">
+                    <h3><i class="fas fa-coins"></i> Available Credits</h3>
+                    <div class="credit-number" id="creditCount">0</div>
+                    <p class="mb-2">Credits remaining</p>
+                    <small id="subscriptionStatus">Subscription: Inactive</small>
+
+                    <!-- Credits Exhausted Warning -->
+                    <div id="creditsExhaustedWarning" class="alert alert-danger mt-3" style="display: none;">
+                        <strong><i class="fas fa-exclamation-circle"></i> Credits Exhausted!</strong>
+                        Subscribe now to get 300 more credits and continue using our services.
+                    </div>
+                </div>
+
+                <!-- User Stats -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stats-card text-center">
+                            <h6>This Month Used</h6>
+                            <div class="h4 text-primary" id="monthlyUsed">0</div>
+                            <small>Credits</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stats-card text-center">
+                            <h6>Total Payments</h6>
+                            <div class="h4 text-success" id="totalPayments">0</div>
+                            <small>Transactions</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stats-card text-center">
+                            <h6>Total Spent</h6>
+                            <div class="h4 text-info" id="totalSpent">$0</div>
+                            <small>USD</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Credits Section -->
+                <div class="subscription-section">
+                    <h5><i class="fas fa-minus-circle"></i> Use Credits</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="number" id="creditsToUse" class="form-control" placeholder="Credits to use" min="1">
+                        </div>
+                        <div class="col-md-6">
+                            <button onclick="useCredits()" class="btn btn-warning w-100" id="useCreditsBtn">
+                                <i class="fas fa-play"></i> Use Credits
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subscription Management -->
+                <div id="subscriptionManagement" class="subscription-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5><i class="fas fa-crown"></i> Subscription Management</h5>
+                        <div id="subscriptionBadge" class="badge bg-secondary">Inactive</div>
+                    </div>
+
+                    <!-- Active Subscription -->
+                    <div id="activeSubscription" style="display: none;">
+                        <div class="alert alert-success">
+                            <strong><i class="fas fa-check-circle"></i> Subscription Active</strong><br>
+                            Next payment: <span id="nextPaymentDate">-</span><br>
+                            <small>You'll automatically receive 300 credits each month. Credits roll over if unused.</small>
+                        </div>
+                        <button onclick="cancelSubscription()" class="cancel-btn">
+                            <i class="fas fa-times"></i> Cancel Subscription
+                        </button>
+                    </div>
+
+                    <!-- Inactive Subscription -->
+                    <div id="inactiveSubscription">
+                        <div class="alert alert-info">
+                            <strong><i class="fas fa-info-circle"></i> No Active Subscription</strong><br>
+                            Subscribe to get 300 credits monthly with automatic renewal.<br>
+                            <small>Perfect for regular users • Cancel anytime • Credits never expire</small>
+                        </div>
+                        <button onclick="startSubscription()" class="paypal-btn" id="subscribeBtn">
+                            <i class="fab fa-paypal"></i> Subscribe Now - $49/month
+                        </button>
+                    </div>
+
+                    <!-- Cancelled Subscription -->
+                    <div id="cancelledSubscription" style="display: none;">
+                        <div class="alert alert-warning">
+                            <strong><i class="fas fa-pause-circle"></i> Subscription Cancelled</strong><br>
+                            Your subscription is cancelled but your remaining credits won't expire.<br>
+                            <small>Reactivate anytime to resume automatic monthly credits.</small>
+                        </div>
+                        <button onclick="reactivateSubscription()" class="paypal-btn" id="reactivateBtn">
+                            <i class="fab fa-paypal"></i> Reactivate Subscription - $49/month
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Payment History -->
+                <div class="subscription-section">
+                    <h5><i class="fas fa-history"></i> Payment History</h5>
+                    <div id="paymentHistory">
+                        <p class="text-muted">Loading payment history...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success/Error Messages -->
+            <div id="messages"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Success - Credits System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .success-container {
+      background: linear-gradient(45deg, #4caf50, #45a049);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .success-card {
+      background: white;
+      color: #333;
+      border-radius: 15px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-width: 500px;
+    }
+    .success-icon {
+      font-size: 4rem;
+      color: #4caf50;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="success-container">
+  <div class="success-card">
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h2>Subscription Activated!</h2>
+    <p class="lead">Your PayPal payment has been processed successfully.</p>
+    <div class="alert alert-success">
+      <strong>✅ 300 credits added to your account</strong><br>
+      <small>Your subscription will auto-renew monthly. Credits roll over if unused.</small>
+    </div>
+    <a href="/" class="btn btn-success btn-lg">
+      <i class="fas fa-home"></i> Return to Dashboard
+    </a>
+  </div>
+</div>
+</body>
+</html>
