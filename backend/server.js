@@ -11,7 +11,7 @@ app.use(cors())
 app.use(express.json())
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://rahul:1234@cluster0.8o2mks9.mongodb.net/paypal-credits", {
+mongoose.connect(process.env.MONGODB_URI ||  {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
